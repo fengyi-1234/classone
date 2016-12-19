@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>无标题文档</title>
+<style>
+#wrap{
+	width:300px;
+	}
+label{
+	display:block;}
+ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+	border:1px solid #000;
+}
+li{
+	font:12px/24px "宋体";
+	margin-bottom:1px;
+	}
+.show{
+	background:#FF0;
+	}
+</style>
+<script>
+
+/*	
+	隔行变色：创建一个储存数据的容器，用来放颜色
+			2.for循环  找到所有的label 然后运用取模%来设置各行的颜色
+			鼠标移入：设置一个变量oldColor为空字符，把原本的颜色赋值oldColor,在设置移入的颜色为黄色
+			鼠标移出：还原原来的颜色
+	点击 check
+		1) check 是选中的 就把所有 复选框都选中，把对应的label变成灰色
+		2) check 不是选中的 就把所有复选框取消选中,把对应的lable还原成一开始的颜色
+	点击label：
+		1)找到对应input
+		2) input是选中,给label 变成灰色
+		3) input不是选中,把label  还原成 原来的颜色
+		4) 找到所有input 如果每一个input 都选中了，就选中 check，如果有1个input没有选中，就不选中check	
+*/
+	window.onload=function(){
+		var wrap=document.getElementById("wrap");
+		var li=wrap.getElementsByTagName("label");
+		var check=document.getElementById("check");
+		var checks = wrap.getElementsByTagName('ul')[0].getElementsByTagName('input');
+		var oldColor="";
+		var colors=['red','blue','green'];
+		for(var i=0;i<li.length;i++){
+			li[i].index=i;
+			li[i].style.background=colors[i%colors.length];	
+			li[i].onmouseover=function(){
+				oldColor=this.style.background;
+				this.style.background="yellow";
+			};
+			li[i].onmouseout=function(){
+				this.style.background=oldColor;
+			};
+			li[i].onclick=function(){
+				var isChecked = true;
+				for(var i = 0; i < checks.length; i++) {
+					if(checks[i].checked == false) {
+						isChecked = false;
+					}
+				}
+				check.checked = isChecked;
+				if(checks[this.index].checked) {
+					this.style.background = "#ccc";
+				} else {
+					this.style.background = colors[this.index%colors.length];
+				}
+				oldColor = this.style.background;
+
+			};
+		}	
+		check.onclick = function() {
+			for(var i = 0; i < checks.length; i++) {
+				checks[i].checked = this.checked;
+				if(this.checked) {
+					li[i].style.background = "#ccc";
+				} else {
+					li[i].style.background = colors[i%colors.length];
+				}
+			}
+		};
+
+	};
+</script>
+</head>
+
+<body>
+<div id="wrap">
+	<ul>
+    	<li><label><input type="checkbox"><span>私奔</span><span>汪峰</span></label></li>
+		<li><label><input type="checkbox"><span>私奔</span><span>汪峰</span></label></li>
+		<li><label><input type="checkbox"><span>私奔</span><span>汪峰</span></label></li>
+		<li><label><input type="checkbox"><span>私奔</span><span>汪峰</span></label></li>
+		<li><label><input type="checkbox"><span>私奔</span><span>汪峰</span></label></li>
+		<li><label><input type="checkbox"><span>私奔</span><span>汪峰</span></label></li>
+		<li><label><input type="checkbox"><span>私奔</span><span>汪峰</span></label></li>        
+    </ul>
+    <div>
+    	<input type="checkbox" id="check"/>
+        <span>全选</span>
+    </div>
+    
+</div>
+</body>
+</html>
